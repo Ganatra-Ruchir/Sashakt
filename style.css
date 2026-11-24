@@ -149,9 +149,9 @@ h1,h2,h3,.stat b,.brand{color:var(--title)}.top{background:#e8f6f8;color:#486477
 .editorial-gallery-page>.section,.editorial-gallery-page>.editorial-hero{width:100%;min-width:0}
 .editorial-hero.hero-compact{padding-block:clamp(20px,2vw,32px)}
 .hero-compact .editorial-cover{height:clamp(210px,15.5vw,265px)}
-.hero-compact .editorial-hero-grid{align-items:center}
-.hero-compact .editorial-hero-grid>div{align-self:center}
-.hero-compact .editorial-cover{align-self:center}
+.hero-compact .editorial-hero-grid{align-items:start}
+.hero-compact .editorial-hero-grid>div{align-self:start}
+.hero-compact .editorial-cover{align-self:start}
 .hero-compact .editorial-hero-grid>div .crumb{margin-bottom:12px}
 .editorial-hero-grid,.pillar-hero-grid,.centre-hero-grid,.home-intro-grid{min-width:0}
 .editorial-hero-grid>*,.pillar-hero-grid>*,.centre-hero-grid>*,.home-intro-grid>*{min-width:0}
