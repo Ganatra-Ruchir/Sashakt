@@ -22,6 +22,16 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const root='assets/field/';
   const make=(file,title)=>({src:root+file,title});
   const P={
+    narolOPD2:make('narol-opd-extra-01.jpg','Narol OPD · January 2024 archive'),
+    narolOPD3:make('narol-opd-extra-02.jpg','Narol OPD · January 2024 archive'),
+    narodaOPD2:make('naroda-opd-extra-01.jpg','Naroda OPD · December 2023 archive'),
+    narodaOPD3:make('naroda-opd-extra-02.jpg','Naroda OPD · December 2023 archive'),
+    balWorkshop1:make('bal-workshop-extra-01.jpg','Bal Sashakt canvas workshop · January 2022 archive'),
+    balWorkshop2:make('bal-workshop-extra-02.jpg','Bal Sashakt canvas workshop · January 2022 archive'),
+    scienceVisit1:make('science-city-extra-01.jpg','Science City visit · activity archive'),
+    scienceVisit2:make('science-city-extra-02.jpg','Science City visit · activity archive'),
+    financial2:make('financial-extra-01.jpg','Financial literacy session · September 2024 archive'),
+    financial3:make('financial-extra-02.jpg','Financial literacy session · September 2024 archive'),
     narolGrad:make('narol-graduation-single.svg','Narol skilling graduation · Q2 2026–27'),
     narodaGrad:make('naroda-skilling.jpg','Naroda skilling graduation · Q2 archive'),
     narolOPD:make('narol-opd-archive.jpg','Narol medical OPD · January 2024 archive'),
@@ -59,7 +69,55 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const photos=[...document.querySelectorAll('a.centre-photo[data-field-photo]')];
   if(!photos.length)return;
   const isHero=a=>a.matches('.editorial-cover,.pillar-cover,.home-intro-photo')||!!a.closest('.centre-cover');
-  const gallery=a=>unique([item(a),...photos.filter(x=>!x.closest('[hidden]')).map(item)]);
+  
+  const collections={
+    opd:[P.narolOPD,P.narolOPD2,P.narolOPD3,P.narodaOPD,P.narodaOPD2,P.narodaOPD3],
+    graduation:[P.narolGrad,P.narodaGrad],
+    bal:[P.narolBal,P.narodaBal,P.balWorkshop1,P.balWorkshop2],
+    scienceCity:[P.narolScience,P.narodaScience,P.scienceVisit1,P.scienceVisit2],
+    school:[P.school,P.school2],
+    salon:[P.salon],
+    tailoring:[P.tailoring],
+    autocad:[P.autoCAD],
+    youth:[P.youth],
+    financial:[P.financial,P.financial2,P.financial3]
+  };
+  const activityBySrc=new Map(Object.entries(collections).flatMap(([key,items])=>items.map(p=>[p.src,key])));
+  const activityGallery=a=>{
+    const selected=item(a),key=activityBySrc.get(selected.src),group=key?collections[key]:[];
+    const centre=selected.title.toLowerCase().match(/narol\b|naroda\b|lambha\b/)?.[0];
+    const same=p=>centre&&p.title.toLowerCase().includes(centre);
+    return unique([selected,...group.filter(same),...group.filter(p=>!same(p))]);
+  };
+  const applyFit=(a)=>{
+    if(!isHero(a))return;
+    const img=a.querySelector('img');if(!img)return;
+    const sync=()=>{
+      if(!img.naturalWidth||!img.naturalHeight)return;
+      const maxH=Math.min(420,Math.max(215,innerWidth*(innerWidth<=600?.61:innerWidth<=900?.43:.25)));
+      const fit=Math.round(maxH*img.naturalWidth/img.naturalHeight);
+      const shell=a.closest('.photo-carousel-shell');
+      (shell||a).style.setProperty('--photo-fit-width',fit+'px');
+      a.style.setProperty('--photo-fit-width',fit+'px');
+      a.classList.add('fit-photo-frame');if(shell)shell.classList.add('fit-photo-shell');
+    };
+    img.addEventListener('load',sync);addEventListener('resize',sync,{passive:true});sync();
+  };
+  const tagNames={health:'Health & Medical',skills:'Skilling & Employment',education:'Education & School Development',livelihood:'Livelihood & Community Development'};
+  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',tailoring:'livelihood',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
+  const enhanceCard=a=>{
+    const card=a.closest('article.centre-story.has-photo,article.pillar-activity.with-photo,article.activity-entry');
+    if(!card||a.parentElement!==card)return;
+    const copy=card.querySelector(':scope > .story-content,:scope > .pillar-activity-copy,:scope > div');
+    if(!copy)return;
+    card.classList.add('photo-kpi-card');copy.classList.add('photo-kpi-copy');
+    let tag=copy.querySelector('.story-tag');
+    if(!tag){const category=card.dataset.centreCategory||card.dataset.filterItem||categoryFor(activityBySrc.get(item(a).src));if(tagNames[category]){tag=document.createElement('span');tag.textContent=tagNames[category]}}
+    if(tag){tag.classList.add('photo-kpi-tag');card.append(tag)}
+    const stat=copy.querySelector('.story-stat,.pillar-activity-stat');
+    if(stat)card.classList.add('has-kpi');
+  };
+
   const btn=(text,label,cls)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls||'';b.setAttribute('aria-label',label);return b};
   const renderAnchor=(a,photo)=>{
     const im=a.querySelector('img'),cap=a.querySelector(':scope > span');
@@ -88,6 +146,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   mp.addEventListener('click',()=>moveModal(-1));mn.addEventListener('click',()=>moveModal(1));play.addEventListener('click',()=>{modalPlaying=!modalPlaying;syncModal()});
   modal.querySelector('.photo-close').addEventListener('click',()=>modal.close());
   modal.addEventListener('click',e=>{if(e.target===modal)modal.close()});
+  let touchStart=null;modal.querySelector('.photo-lightbox-stage').addEventListener('touchstart',e=>{touchStart=e.changedTouches[0].clientX},{passive:true});modal.querySelector('.photo-lightbox-stage').addEventListener('touchend',e=>{if(touchStart===null||list.length<2)return;const delta=e.changedTouches[0].clientX-touchStart;touchStart=null;if(Math.abs(delta)>45)moveModal(delta>0?-1:1)},{passive:true});
   modal.addEventListener('keydown',e=>{if(list.length<2)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();moveModal(e.key==='ArrowLeft'?-1:1)}});
   modal.addEventListener('close',()=>{clearTimeout(modalTimer);modalPlaying=false;++modalRevision;mi.removeAttribute('src');returnFocus?.focus({preventScroll:true});returnFocus=null});
   document.addEventListener('visibilitychange',()=>{if(modal.open){if(document.hidden)clearTimeout(modalTimer);else syncModal()}});
@@ -99,11 +158,12 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   }
   photos.forEach(a=>{
     if(a.getAttribute('href').includes('narol-skilling.jpg'))renderAnchor(a,item(a));
-    const first=item(a);if(a.closest('.centre-activities .has-photo'))a.style.setProperty('--activity-image','url('+JSON.stringify(first.src)+')');const slides=isHero(a)?unique([first,...(groups[path]||[])]):[];
+    const first=item(a);enhanceCard(a);const slides=isHero(a)?unique([first,...(groups[path]||[]),...activityGallery(a)]):[];
     if(slides.length<2){
-      a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,gallery(a),item(a).src))e.preventDefault()});return;
+      applyFit(a);
+      a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,activityGallery(a),item(a).src))e.preventDefault()});return;
     }
-    const shell=document.createElement('div');shell.className='photo-carousel-shell';shell.setAttribute('role','region');shell.setAttribute('aria-label','Activity photo slideshow');a.before(shell);shell.append(a);
+    const shell=document.createElement('div');shell.className='photo-carousel-shell';shell.setAttribute('role','region');shell.setAttribute('aria-label','Activity photo slideshow');a.before(shell);shell.append(a);applyFit(a);
     const prev=btn('‹','Previous photograph','photo-carousel-arrow photo-carousel-prev'),next=btn('›','Next photograph','photo-carousel-arrow photo-carousel-next'),toggle=btn('Ⅱ','Pause slideshow','photo-carousel-toggle'),ind=document.createElement('div');ind.className='photo-carousel-dots';
     shell.append(prev,next,toggle,ind);
     let at=0,visible=!('IntersectionObserver'in window),hover=false,focused=false,paused=reduced.matches,timer=null,revision=0;
@@ -119,7 +179,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     prev.addEventListener('click',()=>show(at-1));next.addEventListener('click',()=>show(at+1));toggle.addEventListener('click',()=>{paused=!paused;updateToggle();schedule()});
     shell.addEventListener('mouseenter',()=>{hover=true;schedule()});shell.addEventListener('mouseleave',()=>{hover=false;schedule()});shell.addEventListener('focusin',()=>{focused=true;schedule()});shell.addEventListener('focusout',e=>{if(!shell.contains(e.relatedTarget)){focused=false;schedule()}});
     shell.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();show(at+(e.key==='ArrowLeft'?-1:1))}});
-    a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,slides,item(a).src)){e.preventDefault();schedule()}});
+    a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,activityGallery(a),item(a).src)){e.preventDefault();schedule()}});
     if('IntersectionObserver'in window){new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule()},{threshold:.35}).observe(shell)}
     document.addEventListener('visibilitychange',schedule);modal.addEventListener('close',schedule);reduced.addEventListener?.('change',e=>{if(e.matches){paused=true;updateToggle();schedule()}});
     syncDots();updateToggle();schedule();
