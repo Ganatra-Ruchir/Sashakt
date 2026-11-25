@@ -80,9 +80,9 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const path=(location.pathname.split('/').pop()||'index').replace(/\.html$/,'');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const unique=list=>[...new Map(list.filter(x=>x&&x.src).map(x=>[x.src,x])).values()];
-  const normalize=src=>src.includes('narol-skilling.jpg')?root+'narol-graduation-single.svg':src;
+  const normalize=src=>typeof src==='string'&&src.includes('narol-skilling.jpg')?root+'narol-graduation-single.svg':src;
   const item=a=>({src:normalize(a.getAttribute('href')),title:a.dataset.fieldPhoto||a.querySelector('img')?.alt||'Activity photograph'});
-  const photos=[...document.querySelectorAll('a.centre-photo[data-field-photo]')];
+  const photos=[...document.querySelectorAll('a.centre-photo[data-field-photo][href]')];
   if(!photos.length)return;
   const isHero=a=>a.matches('.editorial-cover,.pillar-cover,.home-intro-photo')||!!a.closest('.centre-cover');
   
@@ -95,7 +95,8 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     salon:[P.salon],
     tailoring:[P.tailoring,P.tail1,P.tail2],
     beauty:[P.beauty1,P.beauty2],
-    digital:[P.data1,P.data2,P.gst1,P.gst2],
+    dataEntry:[P.data1,P.data2],
+    gstTally:[P.gst1,P.gst2],
     ev:[P.ev1,P.ev2,P.ev3],
     autocad:[P.autoCAD,P.design1,P.design2,P.design3],
     youth:[P.youth],
@@ -104,9 +105,10 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const activityBySrc=new Map(Object.entries(collections).flatMap(([key,items])=>items.map(p=>[p.src,key])));
   const activityGallery=a=>{
     const selected=item(a),key=activityBySrc.get(selected.src),group=key?collections[key]:[];
-    const centre=selected.title.toLowerCase().match(/narol\b|naroda\b|lambha\b/)?.[0];
-    const same=p=>centre&&p.title.toLowerCase().includes(centre);
-    return unique([selected,...group.filter(same),...group.filter(p=>!same(p))]);
+    const centreOf=title=>title.toLowerCase().match(/\b(?:naroda|narol|lambha)\b/)?.[0];
+    const centre=centreOf(selected.title);
+    // A centre-specific card must not display a different or unverified centre.
+    return unique([selected,...group.filter(p=>!centre||centreOf(p.title)===centre)]);
   };
   const applyFit=(a)=>{
     if(!isHero(a))return;
@@ -123,7 +125,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     img.addEventListener('load',sync);addEventListener('resize',sync,{passive:true});sync();
   };
   const tagNames={health:'Health & Medical',skills:'Skilling & Employment',education:'Education & School Development',livelihood:'Livelihood & Community Development'};
-  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',tailoring:'skills',beauty:'skills',digital:'skills',ev:'skills',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
+  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',tailoring:'skills',beauty:'skills',dataEntry:'skills',gstTally:'skills',ev:'skills',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
   const enhanceCard=a=>{
     const card=a.closest('article.centre-story.has-photo,article.pillar-activity.with-photo,article.activity-entry');
     if(!card||a.parentElement!==card)return;
@@ -170,14 +172,17 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   modal.addEventListener('close',()=>{clearTimeout(modalTimer);modalPlaying=false;++modalRevision;mi.removeAttribute('src');returnFocus?.focus({preventScroll:true});returnFocus=null});
   document.addEventListener('visibilitychange',()=>{if(modal.open){if(document.hidden)clearTimeout(modalTimer);else syncModal()}});
   function openModal(a,collection,selected){
-    if(typeof modal.showModal!=='function')return false;
+    if(typeof modal.showModal!=='function'||modal.open)return false;
     list=unique(collection);idx=Math.max(0,list.findIndex(x=>x.src===selected));if(!list.length)return false;
     returnFocus=a;modalPlaying=false;play.hidden=!!a.closest('.centre-activities');dots.replaceChildren();list.forEach((p,i)=>{const dot=btn('', 'View photograph '+(i+1)+': '+p.title,'photo-dot');dot.addEventListener('click',()=>{idx=i;syncModal()});dots.append(dot)});
     controls.hidden=list.length<2;modal.showModal();syncModal();return true;
   }
   photos.forEach(a=>{
-    if(a.getAttribute('href').includes('narol-skilling.jpg'))renderAnchor(a,item(a));
-    const first=item(a);enhanceCard(a);const slides=isHero(a)?unique([first,...(groups[path]||[]),...activityGallery(a)]):[];
+    if((a.getAttribute('href')||'').includes('narol-skilling.jpg'))renderAnchor(a,item(a));
+    const first=item(a);enhanceCard(a);
+    const centrePage=['narol','naroda','lambha'].includes(path);
+    const heroGroup=(groups[path]||[]).filter(p=>!centrePage||new RegExp('\\b'+path+'\\b','i').test(p.title));
+    const slides=isHero(a)?unique([first,...heroGroup,...activityGallery(a).filter(p=>!centrePage||new RegExp('\\b'+path+'\\b','i').test(p.title))]):[];
     if(slides.length<2){
       applyFit(a);
       a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,activityGallery(a),item(a).src))e.preventDefault()});return;
@@ -189,9 +194,9 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     const syncDots=()=>[...ind.children].forEach((d,i)=>d.setAttribute('aria-pressed',String(i===at)));
     const schedule=()=>{clearTimeout(timer);if(!paused&&visible&&!hover&&!focused&&!document.hidden&&!modal.open)timer=setTimeout(()=>show(at+1),1500)};
     function show(n){
-      clearTimeout(timer);const target=(n+slides.length)%slides.length,rev=++revision;const photo=slides[target];const pre=new Image();
+      clearTimeout(timer);const target=((n%slides.length)+slides.length)%slides.length,rev=++revision;const photo=slides[target];const pre=new Image();
       pre.onload=()=>{if(rev!==revision)return;at=target;renderAnchor(a,photo);syncDots();schedule()};
-      pre.onerror=()=>{if(rev!==revision)return;at=target;schedule()};pre.src=photo.src;
+      pre.onerror=()=>{if(rev!==revision)return;/* Keep the displayed photo and its active dot in sync. */schedule()};pre.src=photo.src;
     }
     const updateToggle=()=>{toggle.textContent=paused?'▶':'Ⅱ';toggle.setAttribute('aria-label',paused?'Play slideshow':'Pause slideshow')};
     slides.forEach((p,i)=>{const d=btn('', 'View photograph '+(i+1)+': '+p.title,'photo-dot');d.addEventListener('click',()=>show(i));ind.append(d)});
