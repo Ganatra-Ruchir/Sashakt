@@ -190,19 +190,20 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     const shell=document.createElement('div');shell.className='photo-carousel-shell';shell.setAttribute('role','region');shell.setAttribute('aria-label','Activity photo slideshow');a.before(shell);shell.append(a);applyFit(a);
     const prev=btn('‹','Previous photograph','photo-carousel-arrow photo-carousel-prev'),next=btn('›','Next photograph','photo-carousel-arrow photo-carousel-next'),toggle=btn('Ⅱ','Pause slideshow','photo-carousel-toggle'),ind=document.createElement('div');ind.className='photo-carousel-dots';
     shell.append(prev,next,toggle,ind);
-    let at=0,visible=!('IntersectionObserver'in window),hover=false,focused=false,paused=reduced.matches,timer=null,revision=0;
+    let at=0,visible=!('IntersectionObserver'in window),hover=false,focused=false,paused=reduced.matches,timer=null,revision=0;const unavailable=new Set();
     const syncDots=()=>[...ind.children].forEach((d,i)=>d.setAttribute('aria-pressed',String(i===at)));
-    const schedule=()=>{clearTimeout(timer);if(!paused&&visible&&!hover&&!focused&&!document.hidden&&!modal.open)timer=setTimeout(()=>show(at+1),1500)};
+    const nextAvailable=(direction=1)=>{for(let i=1;i<slides.length;i++){const j=(at+direction*i+slides.length)%slides.length;if(!unavailable.has(j))return j}return at};
+    const schedule=()=>{clearTimeout(timer);const nextIndex=nextAvailable();if(nextIndex!==at&&!paused&&visible&&!hover&&!focused&&!document.hidden&&!modal.open)timer=setTimeout(()=>show(nextIndex),1500)};
     function show(n){
       clearTimeout(timer);const target=((n%slides.length)+slides.length)%slides.length,rev=++revision;const photo=slides[target];const pre=new Image();
-      pre.onload=()=>{if(rev!==revision)return;at=target;renderAnchor(a,photo);syncDots();schedule()};
-      pre.onerror=()=>{if(rev!==revision)return;/* Keep the displayed photo and its active dot in sync. */schedule()};pre.src=photo.src;
+      pre.onload=()=>{if(rev!==revision)return;unavailable.delete(target);at=target;renderAnchor(a,photo);syncDots();schedule()};
+      pre.onerror=()=>{if(rev!==revision)return;unavailable.add(target);schedule()};pre.src=photo.src;
     }
     const updateToggle=()=>{toggle.textContent=paused?'▶':'Ⅱ';toggle.setAttribute('aria-label',paused?'Play slideshow':'Pause slideshow')};
     slides.forEach((p,i)=>{const d=btn('', 'View photograph '+(i+1)+': '+p.title,'photo-dot');d.addEventListener('click',()=>show(i));ind.append(d)});
-    prev.addEventListener('click',()=>show(at-1));next.addEventListener('click',()=>show(at+1));toggle.addEventListener('click',()=>{paused=!paused;updateToggle();schedule()});
+    prev.addEventListener('click',()=>show(nextAvailable(-1)));next.addEventListener('click',()=>show(nextAvailable()));toggle.addEventListener('click',()=>{paused=!paused;updateToggle();schedule()});
     shell.addEventListener('mouseenter',()=>{hover=true;schedule()});shell.addEventListener('mouseleave',()=>{hover=false;schedule()});shell.addEventListener('focusin',()=>{focused=true;schedule()});shell.addEventListener('focusout',e=>{if(!shell.contains(e.relatedTarget)){focused=false;schedule()}});
-    shell.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();show(at+(e.key==='ArrowLeft'?-1:1))}});
+    shell.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();show(nextAvailable(e.key==='ArrowLeft'?-1:1))}});
     a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;if(openModal(a,activityGallery(a),item(a).src)){e.preventDefault();schedule()}});
     if('IntersectionObserver'in window){new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule()},{threshold:.35}).observe(shell)}
     document.addEventListener('visibilitychange',schedule);modal.addEventListener('close',schedule);reduced.addEventListener?.('change',e=>{if(e.matches){paused=true;updateToggle();schedule()}});
