@@ -22,6 +22,22 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const root='assets/field/';
   const make=(file,title)=>({src:root+file,title});
   const P={
+    tail1:make("tailoring-report-01.svg","Self-employed tailoring · Narol · September 2026"),
+    tail2:make("tailoring-report-02.svg","Tailoring training · Narol · September 2026"),
+    beauty1:make("beauty-report-01.svg","Beauty therapist training · Narol · September 2026"),
+    beauty2:make("beauty-report-02.svg","Beauty therapy practical session · Narol · September 2026"),
+    data1:make("data-entry-report-01.svg","Domestic data entry operator training · Narol · September 2026"),
+    data2:make("data-entry-report-02.svg","Domestic data entry operator classroom session · Narol · September 2026"),
+    gst1:make("gst-tally-report-01.svg","GST–Tally computer practice · Narol · September 2026"),
+    gst2:make("gst-tally-report-02.svg","GST–Tally training · Narol · September 2026"),
+    grad1:make("graduation-report-01.svg","Narol graduation ceremony · September 2026"),
+    grad2:make("graduation-report-02.svg","Narol tailoring graduation · September 2026"),
+    ev1:make("ev-report-01.svg","EV/HV batch orientation · iACE GP Ahmedabad"),
+    ev2:make("ev-report-02.svg","Hybrid vehicle classroom session · iACE GP Ahmedabad"),
+    ev3:make("ev-report-03.svg","Hands-on component practice · iACE GP Ahmedabad"),
+    design1:make("design-lab-report-01.jpg","Design software training · GGP Ahmedabad · 2025–26"),
+    design2:make("design-lab-report-02.jpg","Digital drawing practice · GGP Ahmedabad · 2025–26"),
+    design3:make("design-lab-report-03.jpg","Technical design assignment · GGP Ahmedabad · 2025–26"),
     narolOPD2:make('narol-opd-extra-01.jpg','Narol OPD · January 2024 archive'),
     narolOPD3:make('narol-opd-extra-02.jpg','Narol OPD · January 2024 archive'),
     narodaOPD2:make('naroda-opd-extra-01.jpg','Naroda OPD · December 2023 archive'),
@@ -59,7 +75,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     naroda:[P.narodaGrad,P.narodaBal,P.narodaScience,P.narodaOPD,P.salon,P.youth],
     lambha:[P.school,P.school2],'bal-sashakt':[P.narodaBal,P.narolBal],
     'science-city':[P.narolScience,P.narodaScience],'school-development':[P.school,P.school2],
-    'science-labs':[P.school,P.school2],'youth-skilling':[P.youth,P.autoCAD]
+    'science-labs':[P.school,P.school2],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3],automotive:[P.ev1,P.ev2,P.ev3]
   };
   const path=(location.pathname.split('/').pop()||'index').replace(/\.html$/,'');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -72,13 +88,16 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   
   const collections={
     opd:[P.narolOPD,P.narolOPD2,P.narolOPD3,P.narodaOPD,P.narodaOPD2,P.narodaOPD3],
-    graduation:[P.narolGrad,P.narodaGrad],
+    graduation:[P.narolGrad,P.grad1,P.grad2,P.narodaGrad],
     bal:[P.narolBal,P.narodaBal,P.balWorkshop1,P.balWorkshop2],
     scienceCity:[P.narolScience,P.narodaScience,P.scienceVisit1,P.scienceVisit2],
     school:[P.school,P.school2],
     salon:[P.salon],
-    tailoring:[P.tailoring],
-    autocad:[P.autoCAD],
+    tailoring:[P.tailoring,P.tail1,P.tail2],
+    beauty:[P.beauty1,P.beauty2],
+    digital:[P.data1,P.data2,P.gst1,P.gst2],
+    ev:[P.ev1,P.ev2,P.ev3],
+    autocad:[P.autoCAD,P.design1,P.design2,P.design3],
     youth:[P.youth],
     financial:[P.financial,P.financial2,P.financial3]
   };
@@ -104,7 +123,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     img.addEventListener('load',sync);addEventListener('resize',sync,{passive:true});sync();
   };
   const tagNames={health:'Health & Medical',skills:'Skilling & Employment',education:'Education & School Development',livelihood:'Livelihood & Community Development'};
-  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',tailoring:'livelihood',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
+  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',tailoring:'skills',beauty:'skills',digital:'skills',ev:'skills',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
   const enhanceCard=a=>{
     const card=a.closest('article.centre-story.has-photo,article.pillar-activity.with-photo,article.activity-entry');
     if(!card||a.parentElement!==card)return;
