@@ -185,3 +185,31 @@ h1,h2,h3,.stat b,.brand{color:var(--title)}.top{background:#e8f6f8;color:#486477
 .partner-logo-panel{min-width:0}.partner-logo{max-width:100%}
 @media(max-width:900px){.hero-compact .editorial-hero-grid{align-items:start}.hero-compact .editorial-hero-grid>div,.hero-compact .editorial-cover{align-self:start}.hero-compact .editorial-cover{height:clamp(210px,35vw,280px)}.centre-story-grid.activity-text-grid,.pillar-activity-grid.activity-text-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.hero-compact .editorial-cover{height:clamp(180px,49vw,260px)}.centre-story-grid.activity-photo-grid,.pillar-activity-grid.activity-photo-grid,.centre-story-grid.activity-text-grid,.pillar-activity-grid.activity-text-grid{grid-template-columns:minmax(0,1fr);gap:10px}.activity-photo-grid>article:only-child{display:flex;flex-direction:column}.activity-photo-grid>article:only-child>.centre-photo{height:auto;min-height:0;aspect-ratio:16/9}.pillar-kpi strong{font-size:12px}.editorial-stats .pillar-metrics.kpi-count-1{width:100%}.editorial-stats .pillar-metrics.kpi-count-2{width:100%}.activity-text-grid .story-content,.activity-text-grid .pillar-activity-copy{padding:14px 16px}.partner-logo{max-width:100%}}
+
+/* Photo slideshows and full-size photo viewer. */
+.photo-carousel-shell{position:relative;min-width:0;width:100%;align-self:start;isolation:isolate}
+.photo-carousel-shell>.centre-photo{width:100%;margin:0}
+.photo-carousel-arrow,.photo-carousel-toggle{position:absolute;z-index:3;display:grid;place-items:center;border:1px solid #ffffffd9;background:#103f68d9;color:#fff;box-shadow:0 3px 12px #103f6825;cursor:pointer;font:inherit;line-height:1;padding:0;touch-action:manipulation}
+.photo-carousel-arrow{top:44%;width:38px;height:38px;border-radius:50%;font-size:29px;transform:translateY(-50%)}
+.photo-carousel-prev{left:10px}.photo-carousel-next{right:10px}
+.photo-carousel-toggle{top:10px;right:10px;width:34px;height:34px;border-radius:50%;font-size:15px}
+.photo-carousel-dots{position:absolute;left:50%;bottom:43px;transform:translateX(-50%);z-index:3;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 8px;border-radius:999px;background:#103f68bd;max-width:calc(100% - 22px)}
+.photo-dot{display:block;flex:none;width:11px;height:11px;border:1px solid #fff;border-radius:50%;padding:0;background:#ffffff80;cursor:pointer;touch-action:manipulation}
+.photo-dot[aria-pressed=true]{background:#fff;box-shadow:0 0 0 2px #00ae9e}
+.photo-carousel-arrow:hover,.photo-carousel-toggle:hover{background:#103f68}
+.photo-carousel-shell button:focus-visible,.photo-lightbox button:focus-visible{outline:3px solid #00ae9e;outline-offset:3px}
+.photo-carousel-shell img{transition:none}.photo-carousel-shell .centre-photo:hover img{transform:none}
+.photo-lightbox{width:min(1100px,95vw);max-height:94vh;max-height:94dvh;overflow:auto;padding:14px}
+.photo-lightbox-stage{position:relative;background:#e4f3fb;border-radius:12px;min-height:80px;display:grid;place-items:center;overflow:hidden}
+.photo-lightbox-stage img{width:100%;height:auto;max-height:67vh;max-height:67dvh;object-fit:contain}
+.photo-lightbox-stage img[hidden],.photo-lightbox-stage [hidden],.photo-lightbox-controls[hidden]{display:none!important}
+.photo-lightbox-controls{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:12px}
+.photo-lightbox-dots{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:7px;max-width:100%}
+.photo-lightbox .photo-dot{width:13px;height:13px;padding:0;background:#c8dde5;border:1px solid #90afbd;border-radius:50%}
+.photo-lightbox .photo-dot[aria-pressed=true]{background:#103f68;border-color:#103f68}
+.photo-lightbox .photo-modal-prev,.photo-lightbox .photo-modal-next{min-width:38px;font-size:23px;line-height:1}
+.photo-lightbox .photo-count{font-size:12px;color:#40576a;white-space:nowrap}
+.photo-lightbox .photo-modal-play{min-width:65px;font-size:12px}
+.photo-lightbox-title{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){.photo-carousel-arrow{width:33px;height:33px;font-size:25px}.photo-carousel-prev{left:7px}.photo-carousel-next{right:7px}.photo-carousel-toggle{width:30px;height:30px;top:7px;right:7px}.photo-carousel-dots{bottom:40px;gap:5px}.photo-lightbox{padding:10px}.photo-lightbox-stage img{max-height:64dvh}.photo-lightbox-controls{gap:7px}.photo-lightbox .photo-dot{width:12px;height:12px}}
+@media(prefers-reduced-motion:reduce){.photo-carousel-shell *{transition:none!important;animation:none!important}}
