@@ -22,6 +22,13 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const root='assets/field/';
   const make=(file,title)=>({src:root+file,title});
   const P={
+    campN:make('naroda-dental-camp-q2.jpg','Dental camp · Naroda · Q2 2026–27'),
+    finN:make('naroda-financial-literacy-q2.jpg','Financial literacy and scheme support · Naroda · Q2 2026–27'),
+    studioR2:make('narol-studio-user-02.jpg','Diva Design Studio · Narol · production floor'),
+    studioR3:make('narol-studio-user-03.jpg','Diva Design Studio · Narol · garment work'),
+    studioN3:make('naroda-studio-user-01.jpg','Diva Design Studio · Naroda · stitching'),
+    studioN4:make('naroda-studio-user-02.jpg','Diva Design Studio · Naroda · production'),
+    studioN5:make('naroda-studio-user-03.jpg','Diva Design Studio · Naroda · production floor'),
     labR:make('narol-science-labs-q2.jpg','Science lab learning · Narol · Q2 2026–27'),
     campR:make('narol-eye-camp-q2.jpg','Eye check-up camp · Narol · Q2 2026–27'),
     studioR1:make('narol-studio-user-01.jpeg','Diva Design Studio · Narol'),
@@ -80,10 +87,10 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const skilling=[P.narolGrad,P.narodaGrad,P.autoCAD,P.youth,P.tailoring,P.salon];
   const groups={
     index:community,about:community,journey:community,activities:community,'get-involved':community,
-    vision:[P.narodaBal,P.narolBal,P.narolScience,P.school],health:[P.narodaOPD,P.narolOPD],
+    vision:[P.narodaBal,P.narolBal,P.narolScience,P.school],health:[P.narodaOPD,P.narolOPD,P.campR,P.campN],'health-camps':[P.campR,P.campN],'government-schemes':[P.finN,P.finR],'financial-literacy':[P.finR,P.finN,P.financial,P.financial2,P.financial3],
     opd:[P.narodaOPD,P.narolOPD],education,skilling,
-    livelihood:[P.salonR1,P.salonN1,P.studioN1,P.studioN2,P.financial],'diva-salon':[P.salonR1,P.salonN1,P.salonN2,P.salon],'diva-studio':[P.studioR1,P.studioN1,P.studioN2],narol:[P.narolGrad,P.narolBal,P.narolScience,P.narolOPD,P.salonR1,P.studioR1,P.labR,P.campR,P.finR],
-    naroda:[P.narodaGrad,P.narodaBal,P.narodaScience,P.narodaOPD,P.salon,P.studioN1,P.studioN2,P.salonN1,P.salonN2,P.youth],
+    livelihood:[P.salonR1,P.salonN1,P.studioN1,P.studioN2,P.financial],'diva-salon':[P.salonR1,P.salonN1,P.salonN2,P.salon],'diva-studio':[P.studioR1,P.studioR2,P.studioR3,P.studioN1,P.studioN2,P.studioN3,P.studioN4,P.studioN5],narol:[P.narolGrad,P.narolBal,P.narolScience,P.narolOPD,P.salonR1,P.studioR1,P.labR,P.campR,P.finR,P.studioR2,P.studioR3],
+    naroda:[P.narodaGrad,P.narodaBal,P.narodaScience,P.narodaOPD,P.salon,P.studioN1,P.studioN2,P.salonN1,P.salonN2,P.youth,P.labN,P.campN,P.finN,P.studioN3,P.studioN4,P.studioN5],
     lambha:[P.school,P.school2],'bal-sashakt':[P.narodaBal,P.narolBal],
     'science-city':[P.narolScience,P.narodaScience],'school-development':[P.school,P.school2],
     'science-labs':[P.labR,P.labN],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],automotive:[P.ev1,P.ev2,P.ev3]
@@ -104,9 +111,9 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     scienceCity:[P.narolScience,P.narodaScience,P.scienceVisit1,P.scienceVisit2],
     school:[P.school,P.school2],
     salon:[P.salon,P.salonR1,P.salonN1,P.salonN2],
-    studio:[P.studioR1,P.studioN1,P.studioN2],
+    studio:[P.studioR1,P.studioR2,P.studioR3,P.studioN1,P.studioN2,P.studioN3,P.studioN4,P.studioN5],
     schoolLabs:[P.labR,P.labN],
-    healthCamps:[P.campR],
+    healthCamps:[P.campR,P.campN],
     tailoring:[P.tailoring,P.tail1,P.tail2],
     beauty:[P.beauty1,P.beauty2],
     dataEntry:[P.data1,P.data2],
@@ -114,7 +121,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     ev:[P.ev1,P.ev2,P.ev3],
     autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],
     youth:[P.youth],
-    financial:[P.finR,P.financial,P.financial2,P.financial3]
+    financial:[P.finR,P.finN,P.financial,P.financial2,P.financial3]
   };
   const activityBySrc=new Map(Object.entries(collections).flatMap(([key,items])=>items.map(p=>[p.src,key])));
   const activityGallery=a=>{
