@@ -398,3 +398,36 @@ main .fit-photo-shell .photo-carousel-dots{bottom:39px}
 .transparency-links .button{font-size:12px;padding:9px 12px}
 @media(max-width:900px){.home-partner-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.home-transparency-inner{grid-template-columns:auto minmax(0,1fr)}.transparency-links{grid-column:2}.lives-metric .metric-icon{width:60px;height:60px}.lives-metric .metric-icon svg{width:30px;height:30px}}
 @media(max-width:600px){.lives-touched{padding:35px 0 20px}.lives-photo{height:52%}.lives-touched::before{background:linear-gradient(180deg,#0008 0%,#0003 12%,#ffffffeb 32%,#fff 50%)}.lives-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 0}.lives-metrics>.lives-metric:nth-child(3){border-left:0}.lives-metric{padding:0 8px}.lives-metric small{font-size:10px}.lives-secondary{gap:8px}.lives-secondary .lives-metric{display:flex;text-align:center;align-items:center;gap:4px}.lives-secondary .metric-icon{width:36px;height:36px}.home-partner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-transparency-inner{grid-template-columns:1fr;gap:12px;padding:20px;text-align:center;justify-items:center}.transparency-links{grid-column:1;justify-content:center}}
+
+/* Distinct home impact module: the intro separates it from the video, and all
+   image and fade layers use explicit stacking order for predictable contrast. */
+.home-impact-group{padding:clamp(24px,3vw,44px) var(--page-gutter,4vw) 20px}
+.home-impact-group>.lives-touched{max-width:1600px;margin:0 auto;border:1px solid #d6e9ee;border-radius:24px;box-shadow:0 12px 36px #103f680b;padding:clamp(28px,3vw,48px) 0 22px;background:#f9fdfd;position:relative;isolation:isolate;overflow:hidden}
+.home-impact-group .lives-photo{position:absolute;inset:0 0 auto;height:100%;z-index:0;background:url('assets/field/naroda-science-city.jpg') center 30%/cover no-repeat;filter:grayscale(1);opacity:.92;pointer-events:none}
+.home-impact-group .lives-touched::before{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(12,51,72,.73) 0%,rgba(16,63,104,.48) 22%,rgba(232,247,248,.87) 44%,#f2faf9 65%,#f9fdfd 86%,#f9fdfd 100%)}
+.home-impact-group .lives-inner{position:relative;z-index:2;max-width:1280px;padding-inline:clamp(16px,3vw,48px)}
+.home-impact-group .lives-kicker{font-size:11px;letter-spacing:.12em;color:#edfafa}
+.home-impact-group .lives-touched h2{font-family:Manrope,Arial,sans-serif;font-size:clamp(29px,3vw,43px);margin:6px 0 24px;letter-spacing:-.035em;color:#fff;text-shadow:0 2px 8px #123b5b66}
+.home-impact-group .lives-metric .metric-icon{width:68px;height:68px;margin-bottom:5px;color:#087b82;box-shadow:0 6px 18px #103f6817;border:1px solid #fff;background:#f4fcfc}
+.home-impact-group .lives-metrics>.lives-metric:nth-child(2) .metric-icon{background:#e4f3fb;color:#176b9a}
+.home-impact-group .lives-metrics>.lives-metric:nth-child(3) .metric-icon{background:#fcebf1;color:#aa3d64}
+.home-impact-group .lives-metrics>.lives-metric:nth-child(4) .metric-icon{background:#fff0e6;color:#ac4b24}
+.home-impact-group .lives-metric .metric-icon svg{width:32px;height:32px}
+.home-impact-group .lives-metric b{color:#103f68;font-size:clamp(28px,3.1vw,43px);text-shadow:none}
+.home-impact-group .lives-metric .annual-label{color:#103f68}
+.home-impact-group .lives-metric small{color:#3c596d;font-size:11px}
+.home-impact-group .lives-metrics>.lives-metric+.lives-metric{border-color:#c4dce4}
+.home-impact-group .lives-secondary{background:#ffffff9c;border:1px solid #dcebee;border-radius:15px;padding:12px 0;margin-top:20px}
+.home-impact-group .lives-secondary .metric-icon{width:39px;height:39px;background:#e0f6f3;box-shadow:none;margin:0}
+.home-impact-group .lives-secondary .metric-icon svg{width:22px;height:22px}
+.home-impact-group .lives-secondary .lives-metric b{font-size:25px}
+.home-impact-group .lives-note{color:#466477;margin-top:12px}
+.home-impact-group>.home-partners{max-width:1600px;margin:18px auto 0;background:#ffffffb8;border:1px solid #e0ebed;border-radius:22px;padding:25px 0 24px}
+.home-impact-group .home-partners h2{color:#103f68;font-family:Manrope,Arial,sans-serif;font-size:clamp(25px,2.6vw,34px);letter-spacing:-.035em}
+.home-impact-group .home-partners p{margin-bottom:16px}
+.home-impact-group .home-partner-grid{gap:16px;margin-bottom:14px}
+.home-impact-group .home-partner-mark{max-width:165px}
+.home-impact-group>.home-transparency{max-width:1600px;margin:15px auto 0;background:transparent;padding:0}
+.home-impact-group .home-transparency-inner{width:100%;max-width:none;background:linear-gradient(115deg,#e4f3fb,#e0f6f3 58%,#fcebf1);border:1px solid #d6e8ec;border-radius:20px;padding:20px 26px}
+@media(max-width:900px){.home-impact-group .lives-metric .metric-icon{width:58px;height:58px}.home-impact-group .lives-metric .metric-icon svg{width:28px;height:28px}.home-impact-group .lives-secondary .metric-icon{width:38px;height:38px}.home-impact-group .lives-secondary .metric-icon svg{width:22px;height:22px}}
+@media(max-width:600px){.home-impact-group{padding-top:20px}.home-impact-group>.lives-touched{border-radius:18px;padding-top:30px}.home-impact-group .lives-photo{height:55%;background-position:center top}.home-impact-group .lives-touched::before{background:linear-gradient(180deg,#123d58d9 0%,#103f6880 12%,#effaf9ed 28%,#f9fdfd 45%)}.home-impact-group .lives-metric b{font-size:29px}.home-impact-group .lives-metric small{font-size:10px}.home-impact-group .lives-secondary .lives-metric b{font-size:23px}.home-impact-group .home-transparency-inner{padding:18px}.home-impact-group .lives-touched h2{margin-bottom:20px}}
