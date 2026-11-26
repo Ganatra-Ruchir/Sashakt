@@ -22,6 +22,11 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const root='assets/field/';
   const make=(file,title)=>({src:root+file,title});
   const P={
+    labR:make('narol-science-labs-q2.jpg','Science lab learning · Narol · Q2 2026–27'),
+    campR:make('narol-eye-camp-q2.jpg','Eye check-up camp · Narol · Q2 2026–27'),
+    studioR1:make('narol-studio-user-01.jpeg','Diva Design Studio · Narol'),
+    finR:make('narol-financial-literacy-q2.jpg','Financial literacy session · Narol · Q2 2026–27'),
+    labN:make('naroda-science-labs-q2.png','Science lab learning · Naroda · Q2 2026–27'),
     tail1:make("tailoring-report-01.svg","Self-employed tailoring · Narol · September 2026"),
     tail2:make("tailoring-report-02.svg","Tailoring training · Narol · September 2026"),
     beauty1:make("beauty-report-01.svg","Beauty therapist training · Narol · September 2026"),
@@ -77,11 +82,11 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     index:community,about:community,journey:community,activities:community,'get-involved':community,
     vision:[P.narodaBal,P.narolBal,P.narolScience,P.school],health:[P.narodaOPD,P.narolOPD],
     opd:[P.narodaOPD,P.narolOPD],education,skilling,
-    livelihood:[P.salonR1,P.salonN1,P.studioN1,P.studioN2,P.financial],'diva-salon':[P.salonR1,P.salonN1,P.salonN2,P.salon],'diva-studio':[P.studioN1,P.studioN2],narol:[P.narolGrad,P.narolBal,P.narolScience,P.narolOPD,P.salonR1],
+    livelihood:[P.salonR1,P.salonN1,P.studioN1,P.studioN2,P.financial],'diva-salon':[P.salonR1,P.salonN1,P.salonN2,P.salon],'diva-studio':[P.studioR1,P.studioN1,P.studioN2],narol:[P.narolGrad,P.narolBal,P.narolScience,P.narolOPD,P.salonR1,P.studioR1,P.labR,P.campR,P.finR],
     naroda:[P.narodaGrad,P.narodaBal,P.narodaScience,P.narodaOPD,P.salon,P.studioN1,P.studioN2,P.salonN1,P.salonN2,P.youth],
     lambha:[P.school,P.school2],'bal-sashakt':[P.narodaBal,P.narolBal],
     'science-city':[P.narolScience,P.narodaScience],'school-development':[P.school,P.school2],
-    'science-labs':[P.school,P.school2],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],automotive:[P.ev1,P.ev2,P.ev3]
+    'science-labs':[P.labR,P.labN],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],automotive:[P.ev1,P.ev2,P.ev3]
   };
   const path=(location.pathname.split('/').pop()||'index').replace(/\.html$/,'');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -99,7 +104,9 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     scienceCity:[P.narolScience,P.narodaScience,P.scienceVisit1,P.scienceVisit2],
     school:[P.school,P.school2],
     salon:[P.salon,P.salonR1,P.salonN1,P.salonN2],
-    studio:[P.studioN1,P.studioN2],
+    studio:[P.studioR1,P.studioN1,P.studioN2],
+    schoolLabs:[P.labR,P.labN],
+    healthCamps:[P.campR],
     tailoring:[P.tailoring,P.tail1,P.tail2],
     beauty:[P.beauty1,P.beauty2],
     dataEntry:[P.data1,P.data2],
@@ -107,7 +114,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     ev:[P.ev1,P.ev2,P.ev3],
     autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],
     youth:[P.youth],
-    financial:[P.financial,P.financial2,P.financial3]
+    financial:[P.finR,P.financial,P.financial2,P.financial3]
   };
   const activityBySrc=new Map(Object.entries(collections).flatMap(([key,items])=>items.map(p=>[p.src,key])));
   const activityGallery=a=>{
@@ -132,7 +139,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     img.addEventListener('load',sync);addEventListener('resize',sync,{passive:true});sync();
   };
   const tagNames={health:'Health & Medical',skills:'Skilling & Employment',education:'Education & School Development',livelihood:'Livelihood & Community Development'};
-  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',studio:'livelihood',tailoring:'skills',beauty:'skills',dataEntry:'skills',gstTally:'skills',ev:'skills',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
+  const categoryFor=key=>({opd:'health',graduation:'skills',bal:'education',scienceCity:'education',school:'education',salon:'livelihood',studio:'livelihood',schoolLabs:'education',healthCamps:'health',tailoring:'skills',beauty:'skills',dataEntry:'skills',gstTally:'skills',ev:'skills',autocad:'skills',youth:'skills',financial:'livelihood'})[key];
   const enhanceCard=a=>{
     const card=a.closest('article.centre-story.has-photo,article.pillar-activity.with-photo,article.activity-entry');
     if(!card||a.parentElement!==card)return;
