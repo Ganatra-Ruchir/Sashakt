@@ -22,6 +22,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
   const root='assets/field/';
   const make=(file,title)=>({src:root+file,title});
   const P={
+    suman:make('lambha-suman-school-lab.jpg','Suman School science lab · Lambha · archive'),
     campN:make('naroda-dental-camp-q2.jpg','Dental camp · Naroda · Q2 2026–27'),
     finN:make('naroda-financial-literacy-q2.jpg','Financial literacy and scheme support · Naroda · Q2 2026–27'),
     studioR2:make('narol-studio-user-02.jpg','Diva Design Studio · Narol · production floor'),
@@ -91,9 +92,9 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     opd:[P.narodaOPD,P.narolOPD],education,skilling,
     livelihood:[P.salonR1,P.salonN1,P.studioN1,P.studioN2,P.financial],'diva-salon':[P.salonR1,P.salonN1,P.salonN2,P.salon],'diva-studio':[P.studioR1,P.studioR2,P.studioR3,P.studioN1,P.studioN2,P.studioN3,P.studioN4,P.studioN5],narol:[P.narolGrad,P.narolBal,P.narolScience,P.narolOPD,P.salonR1,P.studioR1,P.labR,P.campR,P.finR,P.studioR2,P.studioR3],
     naroda:[P.narodaGrad,P.narodaBal,P.narodaScience,P.narodaOPD,P.salon,P.studioN1,P.studioN2,P.salonN1,P.salonN2,P.youth,P.labN,P.campN,P.finN,P.studioN3,P.studioN4,P.studioN5],
-    lambha:[P.school,P.school2],'bal-sashakt':[P.narodaBal,P.narolBal],
-    'science-city':[P.narolScience,P.narodaScience],'school-development':[P.school,P.school2],
-    'science-labs':[P.labR,P.labN],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],automotive:[P.ev1,P.ev2,P.ev3]
+    lambha:[P.school,P.school2,P.suman],'bal-sashakt':[P.narodaBal,P.narolBal],
+    'science-city':[P.narolScience,P.narodaScience],'school-development':[P.school,P.school2,P.suman],
+    'science-labs':[P.labR,P.labN,P.suman],'youth-skilling':[P.youth,P.autoCAD,P.ev1,P.ev2,P.ev3,P.design1,P.design2],tailoring:[P.tail1,P.tail2,P.tailoring],beauty:[P.beauty1,P.beauty2],'digital-skilling':[P.data1,P.data2,P.gst1,P.gst2],autocad:[P.autoCAD,P.design1,P.design2,P.design3,P.autoCADQ2],automotive:[P.ev1,P.ev2,P.ev3]
   };
   const path=(location.pathname.split('/').pop()||'index').replace(/\.html$/,'');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -112,7 +113,7 @@ if(base==='index'||base==='activities'||base==='impact'){const section=document.
     school:[P.school,P.school2],
     salon:[P.salon,P.salonR1,P.salonN1,P.salonN2],
     studio:[P.studioR1,P.studioR2,P.studioR3,P.studioN1,P.studioN2,P.studioN3,P.studioN4,P.studioN5],
-    schoolLabs:[P.labR,P.labN],
+    schoolLabs:[P.labR,P.labN,P.suman],
     healthCamps:[P.campR,P.campN],
     tailoring:[P.tailoring,P.tail1,P.tail2],
     beauty:[P.beauty1,P.beauty2],
